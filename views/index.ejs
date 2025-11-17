@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="/style.css">
+
+<div class="container">
+  <h2>Logged in as <%= me %></h2>
+  <h3>Pick someone to chat with</h3>
+
+  <ul class="user-list">
+    <% users.forEach(user => { %>
+      <li onclick="location.href='/chat/<%= user %>'">
+        <%= user %>
+      </li>
+    <% }) %>
+  </ul>
+</div>

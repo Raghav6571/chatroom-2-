@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="/style.css">
+
+<div class="container">
+  <h2><%= username %> chatting with <%= talkingTo %></h2>
+
+  <div id="messages" class="messages-box"></div>
+
+  <div class="input-area">
+    <input id="msgInput" placeholder="Type">
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const me = "<%= username %>";
+  const other = "<%= talkingTo %>";
+  const room = [me, other].sort().join("_");
+
+  socket.emit("join", room);
+
+  document.getElementById("sendBtn").onclick = () => {
+    const text = msgInput.value.trim();
+    if (!text) return;
+
+    add(text, "sent");
+
+    socket.emit("message", {
+      room,
+      msg: text,
+      from: me
+    });
+
+    msgInput.value = "";
+  };
+
+  socket.on("message", (data) => {
+    add(data.msg, "received");
+  });
+
+  function add(message, type) {
+    const box = document.getElementById("messages");
+    box.innerHTML += `<div class="msg ${type}">${message}</div>`;
+    box.scrollTop = box.scrollHeight;
+  }
+</script>

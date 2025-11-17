@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="/style.css">
+
+<div class="container">
+  <h2>Select your identity</h2>
+
+  <form action="/login" method="POST">
+    <select name="username">
+      <% users.forEach(u => { %>
+        <option value="<%= u %>"><%= u %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Continue</button>
+  </form>
+</div>
